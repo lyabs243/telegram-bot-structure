@@ -4,6 +4,7 @@ class TelegramBotMessage {
 
     const TELEGRAM_API_PATH = "https://api.telegram.org/bot";
     const TELEGRAM_METHOD_SEND_MESSAGE = "/sendmessage?";
+    const TELEGRAM_METHOD_EDIT_MESSAGE = "/editMessageText?";
     const TELEGRAM_METHOD_SEND_PHOTO = "/sendPhoto?";
     const TELEGRAM_METHOD_ANSWER_CALLBACK = "/answerCallbackQuery?";
     const TELEGRAM_METHOD_DELETE_MESSAGE = "/deleteMessage?";
@@ -53,6 +54,22 @@ class TelegramBotMessage {
         
         $data['chat_id'] = $chatId;
         $data['message_id'] = $messageId;
+
+        $response = $this->sendPostData($url, $data);
+
+        return $response;
+    }
+
+    public function editMessage($chatId, $messageId, $message, $inlineKeyboard = array()) {
+        $url = TelegramBotMessage::TELEGRAM_API_PATH . $this->token . 
+        TelegramBotMessage::TELEGRAM_METHOD_EDIT_MESSAGE;
+        
+        $data['chat_id'] = $chatId;
+        $data['message_id'] = $messageId;
+        $data['text'] = $message;
+        if (count($inlineKeyboard) > 0) {
+            $data['reply_markup']['inline_keyboard'] = $inlineKeyboard;
+        }
 
         $response = $this->sendPostData($url, $data);
 
