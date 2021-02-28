@@ -60,11 +60,14 @@ class TelegramBotMessage {
         return $response;
     }
 
-    public function editMessage($chatId, $messageId, $message, $inlineKeyboard = array()) {
+    public function editMessage($chatId, $messageId, $message, $inlineKeyboard = array(), $parseMode='') {
         $url = TelegramBotMessage::TELEGRAM_API_PATH . $this->token . 
         TelegramBotMessage::TELEGRAM_METHOD_EDIT_MESSAGE;
         
         $data['chat_id'] = $chatId;
+        if (! empty($parseMode)) {
+            $data['parse_mode'] = $parseMode; 
+        }
         $data['message_id'] = $messageId;
         $data['text'] = $message;
         if (count($inlineKeyboard) > 0) {
